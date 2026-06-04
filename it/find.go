@@ -4,12 +4,9 @@ package it
 
 import (
 	"iter"
-	"slices"
 	"time"
 
-	"github.com/samber/lo"
 	"github.com/samber/lo/internal/constraints"
-	"github.com/samber/lo/internal/xrand"
 )
 
 // IndexOf returns the index at which the first occurrence of a value is found in a sequence or -1
@@ -17,15 +14,8 @@ import (
 // Will iterate through the entire sequence if element is not found.
 // Play: https://go.dev/play/p/1OZHU2yfb-m
 func IndexOf[T comparable](collection iter.Seq[T], element T) int {
-	var i int
-	for item := range collection {
-		if item == element {
-			return i
-		}
-		i++
-	}
-
-	return -1
+	_ = "STUB: not implemented"
+	return 0
 }
 
 // LastIndexOf returns the index at which the last occurrence of a value is found in a sequence or -1
@@ -33,38 +23,15 @@ func IndexOf[T comparable](collection iter.Seq[T], element T) int {
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/QPATR3VC5wT
 func LastIndexOf[T comparable](collection iter.Seq[T], element T) int {
-	index := -1
-	var i int
-	for item := range collection {
-		if item == element {
-			index = i
-		}
-		i++
-	}
-
-	return index
+	_ = "STUB: not implemented"
+	return 0
 }
 
 // HasPrefix returns true if the collection has the prefix.
 // Will iterate at most the size of prefix.
 // Play: https://go.dev/play/p/Fyj6uq-G5IH
 func HasPrefix[T comparable](collection iter.Seq[T], prefix ...T) bool {
-	if len(prefix) == 0 {
-		return true
-	}
-
-	var i int
-
-	for item := range collection {
-		if item != prefix[i] {
-			return false
-		}
-		i++
-		if i == len(prefix) {
-			return true
-		}
-	}
-
+	_ = "STUB: not implemented"
 	return false
 }
 
@@ -72,42 +39,16 @@ func HasPrefix[T comparable](collection iter.Seq[T], prefix ...T) bool {
 // Will iterate through the entire sequence and allocate a slice the size of suffix.
 // Play: https://go.dev/play/p/r6bF9Rmq5S0
 func HasSuffix[T comparable](collection iter.Seq[T], suffix ...T) bool {
-	if len(suffix) == 0 {
-		return true
-	}
-
-	n := len(suffix)
-	buf := make([]T, n)
-	var i int
-
-	for buf[i%n] = range collection {
-		i++
-	}
-
-	if i < n {
-		return false
-	}
-
-	for j := range suffix {
-		if suffix[j] != buf[(i+j)%n] {
-			return false
-		}
-	}
-
-	return true
+	_ = "STUB: not implemented"
+	return false
 }
 
 // Find searches for an element in a sequence based on a predicate. Returns element and true if element was found.
 // Will iterate through the entire sequence if predicate never returns true.
 // Play: https://go.dev/play/p/4w28pF_l58a
 func Find[T any](collection iter.Seq[T], predicate func(item T) bool) (T, bool) {
-	for item := range collection {
-		if predicate(item) {
-			return item, true
-		}
-	}
-
-	return lo.Empty[T](), false
+	_ = "STUB: not implemented"
+	return *new(T), false
 }
 
 // FindIndexOf searches for an element in a sequence based on a predicate and returns the index and true.
@@ -115,15 +56,8 @@ func Find[T any](collection iter.Seq[T], predicate func(item T) bool) (T, bool) 
 // Will iterate through the entire sequence if predicate never returns true.
 // Play: https://go.dev/play/p/ihchBAEkhXO
 func FindIndexOf[T any](collection iter.Seq[T], predicate func(item T) bool) (T, int, bool) {
-	var i int
-	for item := range collection {
-		if predicate(item) {
-			return item, i, true
-		}
-		i++
-	}
-
-	return lo.Empty[T](), -1, false
+	_ = "STUB: not implemented"
+	return *new(T), 0, false
 }
 
 // FindLastIndexOf searches for the last element in a sequence based on a predicate and returns the index and true.
@@ -131,32 +65,16 @@ func FindIndexOf[T any](collection iter.Seq[T], predicate func(item T) bool) (T,
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/ezz6hXaC4Md
 func FindLastIndexOf[T any](collection iter.Seq[T], predicate func(item T) bool) (T, int, bool) {
-	var result T
-	index := -1
-	var ok bool
-
-	var i int
-	for item := range collection {
-		if predicate(item) {
-			result = item
-			index = i
-			ok = true
-		}
-		i++
-	}
-
-	return result, index, ok
+	_ = "STUB: not implemented"
+	return *new(T), 0, false
 }
 
 // FindOrElse searches for an element in a sequence based on a predicate. Returns the element if found or a given fallback value otherwise.
 // Will iterate through the entire sequence if predicate never returns true.
 // Play: https://go.dev/play/p/1harvaiGMfI
 func FindOrElse[T any](collection iter.Seq[T], fallback T, predicate func(item T) bool) T {
-	if result, ok := Find(collection, predicate); ok {
-		return result
-	}
-
-	return fallback
+	_ = "STUB: not implemented"
+	return *new(T)
 }
 
 // FindUniques returns a sequence with all the elements that appear in the collection only once.
@@ -165,7 +83,8 @@ func FindOrElse[T any](collection iter.Seq[T], fallback T, predicate func(item T
 // Long heterogeneous input sequences can cause excessive memory usage.
 // Play: https://go.dev/play/p/O8dwXEbT56F
 func FindUniques[T comparable, I ~func(func(T) bool)](collection I) I {
-	return FindUniquesBy(collection, func(item T) T { return item })
+	_ = "STUB: not implemented"
+	return *new(I)
 }
 
 // FindUniquesBy returns a sequence with all the elements that appear in the collection only once.
@@ -175,26 +94,8 @@ func FindUniques[T comparable, I ~func(func(T) bool)](collection I) I {
 // Long heterogeneous input sequences can cause excessive memory usage.
 // Play: https://go.dev/play/p/TiwGIzeDuML
 func FindUniquesBy[T any, U comparable, I ~func(func(T) bool)](collection I, transform func(item T) U) I {
-	return func(yield func(T) bool) {
-		isDupl := make(map[U]bool)
-
-		for item := range collection {
-			key := transform(item)
-
-			duplicated, seen := isDupl[key]
-			if !duplicated {
-				isDupl[key] = seen
-			}
-		}
-
-		for item := range collection {
-			key := transform(item)
-
-			if duplicated := isDupl[key]; !duplicated && !yield(item) {
-				return
-			}
-		}
-	}
+	_ = "STUB: not implemented"
+	return *new(I)
 }
 
 // FindDuplicates returns a sequence with the first occurrence of each duplicated element in the collection.
@@ -203,7 +104,8 @@ func FindUniquesBy[T any, U comparable, I ~func(func(T) bool)](collection I, tra
 // Long heterogeneous input sequences can cause excessive memory usage.
 // Play: https://go.dev/play/p/dw-VLQXKijT
 func FindDuplicates[T comparable, I ~func(func(T) bool)](collection I) I {
-	return FindDuplicatesBy(collection, func(item T) T { return item })
+	_ = "STUB: not implemented"
+	return *new(I)
 }
 
 // FindDuplicatesBy returns a sequence with the first occurrence of each duplicated element in the collection.
@@ -213,22 +115,8 @@ func FindDuplicates[T comparable, I ~func(func(T) bool)](collection I) I {
 // Long heterogeneous input sequences can cause excessive memory usage.
 // Play: https://go.dev/play/p/tm1tZdC93OH
 func FindDuplicatesBy[T any, U comparable, I ~func(func(T) bool)](collection I, transform func(item T) U) I {
-	return func(yield func(T) bool) {
-		isDupl := make(map[U]lo.Tuple2[T, bool])
-
-		for item := range collection {
-			key := transform(item)
-
-			if duplicated, ok := isDupl[key]; !ok {
-				isDupl[key] = lo.Tuple2[T, bool]{A: item}
-			} else if !duplicated.B {
-				if !yield(duplicated.A) {
-					return
-				}
-				isDupl[key] = lo.Tuple2[T, bool]{A: item, B: true}
-			}
-		}
-	}
+	_ = "STUB: not implemented"
+	return *new(I)
 }
 
 // Min search the minimum value of a collection.
@@ -236,7 +124,8 @@ func FindDuplicatesBy[T any, U comparable, I ~func(func(T) bool)](collection I, 
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/0VihyYEaM-M
 func Min[T constraints.Ordered](collection iter.Seq[T]) T {
-	return MinBy(collection, func(a, b T) bool { return a < b })
+	_ = "STUB: not implemented"
+	return *new(T)
 }
 
 // MinIndex search the minimum value of a collection and the index of the minimum value.
@@ -244,7 +133,8 @@ func Min[T constraints.Ordered](collection iter.Seq[T]) T {
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/70ncPxECj6l
 func MinIndex[T constraints.Ordered](collection iter.Seq[T]) (T, int) {
-	return MinIndexBy(collection, func(a, b T) bool { return a < b })
+	_ = "STUB: not implemented"
+	return *new(T), 0
 }
 
 // MinBy search the minimum value of a collection using the given comparison function.
@@ -253,19 +143,8 @@ func MinIndex[T constraints.Ordered](collection iter.Seq[T]) (T, int) {
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/J5koo8khN-g
 func MinBy[T any](collection iter.Seq[T], comparison func(a, b T) bool) T {
-	first := true
-	var mIn T
-
-	for item := range collection {
-		if first {
-			mIn = item
-			first = false
-		} else if comparison(item, mIn) {
-			mIn = item
-		}
-	}
-
-	return mIn
+	_ = "STUB: not implemented"
+	return *new(T)
 }
 
 // MinIndexBy search the minimum value of a collection using the given comparison function and the index of the minimum value.
@@ -274,19 +153,8 @@ func MinBy[T any](collection iter.Seq[T], comparison func(a, b T) bool) T {
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/blldzWJpqVa
 func MinIndexBy[T any](collection iter.Seq[T], comparison func(a, b T) bool) (T, int) {
-	var mIn T
-	index := -1
-
-	var i int
-	for item := range collection {
-		if i == 0 || comparison(item, mIn) {
-			mIn = item
-			index = i
-		}
-		i++
-	}
-
-	return mIn, index
+	_ = "STUB: not implemented"
+	return *new(T), 0
 }
 
 // Earliest search the minimum time.Time of a collection.
@@ -294,7 +162,8 @@ func MinIndexBy[T any](collection iter.Seq[T], comparison func(a, b T) bool) (T,
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/fI6_S10H7Py
 func Earliest(times iter.Seq[time.Time]) time.Time {
-	return MinBy(times, func(a, b time.Time) bool { return a.Before(b) })
+	_ = "STUB: not implemented"
+	return *new(time.Time)
 }
 
 // EarliestBy search the minimum time.Time of a collection using the given transform function.
@@ -302,7 +171,8 @@ func Earliest(times iter.Seq[time.Time]) time.Time {
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/y_Pf3Jmw-B4
 func EarliestBy[T any](collection iter.Seq[T], transform func(item T) time.Time) T {
-	return MinBy(collection, func(a, b T) bool { return transform(a).Before(transform(b)) })
+	_ = "STUB: not implemented"
+	return *new(T)
 }
 
 // Max searches the maximum value of a collection.
@@ -310,7 +180,8 @@ func EarliestBy[T any](collection iter.Seq[T], transform func(item T) time.Time)
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/C2ZtW2bsBZ6
 func Max[T constraints.Ordered](collection iter.Seq[T]) T {
-	return MaxBy(collection, func(a, b T) bool { return a > b })
+	_ = "STUB: not implemented"
+	return *new(T)
 }
 
 // MaxIndex searches the maximum value of a collection and the index of the maximum value.
@@ -318,7 +189,8 @@ func Max[T constraints.Ordered](collection iter.Seq[T]) T {
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/zeu2wUvhl5e
 func MaxIndex[T constraints.Ordered](collection iter.Seq[T]) (T, int) {
-	return MaxIndexBy(collection, func(a, b T) bool { return a > b })
+	_ = "STUB: not implemented"
+	return *new(T), 0
 }
 
 // MaxBy search the maximum value of a collection using the given comparison function.
@@ -327,19 +199,8 @@ func MaxIndex[T constraints.Ordered](collection iter.Seq[T]) (T, int) {
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/yBhXFJb5oxC
 func MaxBy[T any](collection iter.Seq[T], comparison func(a, b T) bool) T {
-	first := true
-	var mAx T
-
-	for item := range collection {
-		if first {
-			mAx = item
-			first = false
-		} else if comparison(item, mAx) {
-			mAx = item
-		}
-	}
-
-	return mAx
+	_ = "STUB: not implemented"
+	return *new(T)
 }
 
 // MaxIndexBy search the maximum value of a collection using the given comparison function and the index of the maximum value.
@@ -348,121 +209,75 @@ func MaxBy[T any](collection iter.Seq[T], comparison func(a, b T) bool) T {
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/MXyE6BTILjx
 func MaxIndexBy[T any](collection iter.Seq[T], comparison func(a, b T) bool) (T, int) {
-	var mAx T
-	index := -1
-
-	var i int
-	for item := range collection {
-		if i == 0 || comparison(item, mAx) {
-			mAx = item
-			index = i
-		}
-		i++
-	}
-
-	return mAx, index
+	_ = "STUB: not implemented"
+	return *new(T), 0
 }
 
 // Latest search the maximum time.Time of a collection.
 // Returns zero value when the collection is empty.
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/r5Yq6ATSHoH
-func Latest(times iter.Seq[time.Time]) time.Time {
-	return MaxBy(times, func(a, b time.Time) bool { return a.After(b) })
-}
+func Latest(times iter.Seq[time.Time]) time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
 // LatestBy search the maximum time.Time of a collection using the given transform function.
 // Returns zero value when the collection is empty.
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/o_daRzHrDUU
 func LatestBy[T any](collection iter.Seq[T], transform func(item T) time.Time) T {
-	return MaxBy(collection, func(a, b T) bool { return transform(a).After(transform(b)) })
+	_ = "STUB: not implemented"
+	return *new(T)
 }
 
 // First returns the first element of a collection and check for availability of the first element.
 // Will iterate at most once.
 // Play: https://go.dev/play/p/EhNyrc8jPfY
 func First[T any](collection iter.Seq[T]) (T, bool) {
-	for item := range collection {
-		return item, true
-	}
-
-	return lo.Empty[T](), false
+	_ = "STUB: not implemented"
+	return *new(T), false
 }
 
 // FirstOrEmpty returns the first element of a collection or zero value if empty.
 // Will iterate at most once.
 // Play: https://go.dev/play/p/NTUTgPCfevx
-func FirstOrEmpty[T any](collection iter.Seq[T]) T {
-	i, _ := First(collection)
-	return i
-}
+func FirstOrEmpty[T any](collection iter.Seq[T]) T { _ = "STUB: not implemented"; return *new(T) }
 
 // FirstOr returns the first element of a collection or the fallback value if empty.
 // Will iterate at most once.
 // Play: https://go.dev/play/p/wGFXI5NHkE2
 func FirstOr[T any](collection iter.Seq[T], fallback T) T {
-	if i, ok := First(collection); ok {
-		return i
-	}
-
-	return fallback
+	_ = "STUB: not implemented"
+	return *new(T)
 }
 
 // Last returns the last element of a collection or error if empty.
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/eGZV-sSmn_Q
 func Last[T any](collection iter.Seq[T]) (T, bool) {
-	var t T
-	var ok bool
-	for item := range collection {
-		t = item
-		ok = true
-	}
-
-	return t, ok
+	_ = "STUB: not implemented"
+	return *new(T), false
 }
 
 // LastOrEmpty returns the last element of a collection or zero value if empty.
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/teODFK4YqM4
-func LastOrEmpty[T any](collection iter.Seq[T]) T {
-	i, _ := Last(collection)
-	return i
-}
+func LastOrEmpty[T any](collection iter.Seq[T]) T { _ = "STUB: not implemented"; return *new(T) }
 
 // LastOr returns the last element of a collection or the fallback value if empty.
 // Will iterate through the entire sequence.
 // Play: https://go.dev/play/p/HNubjW2Mrxs
-func LastOr[T any](collection iter.Seq[T], fallback T) T {
-	if i, ok := Last(collection); ok {
-		return i
-	}
-
-	return fallback
-}
+func LastOr[T any](collection iter.Seq[T], fallback T) T { _ = "STUB: not implemented"; return *new(T) }
 
 // Nth returns the element at index `nth` of collection. An error is returned when nth is out of bounds.
 // Will iterate n times through the sequence.
 // Play: https://go.dev/play/p/FqgCobsKqva
 func Nth[T any, N constraints.Integer](collection iter.Seq[T], nth N) (T, error) {
-	value, ok := seqNth(collection, nth)
-
-	return value, lo.Validate(ok, "nth: %d out of bounds", nth)
+	_ = "STUB: not implemented"
+	return *new(T), nil
 }
 
 func seqNth[T any, N constraints.Integer](collection iter.Seq[T], nth N) (T, bool) {
-	if nth >= 0 {
-		var i N
-		for item := range collection {
-			if i == nth {
-				return item, true
-			}
-			i++
-		}
-	}
-
-	return lo.Empty[T](), false
+	_ = "STUB: not implemented"
+	return *new(T), false
 }
 
 // NthOr returns the element at index `nth` of collection.
@@ -470,11 +285,8 @@ func seqNth[T any, N constraints.Integer](collection iter.Seq[T], nth N) (T, boo
 // Will iterate n times through the sequence.
 // Play: https://go.dev/play/p/MNweuhpy4Ym
 func NthOr[T any, N constraints.Integer](collection iter.Seq[T], nth N, fallback T) T {
-	value, ok := seqNth(collection, nth)
-	if !ok {
-		return fallback
-	}
-	return value
+	_ = "STUB: not implemented"
+	return *new(T)
 }
 
 // NthOrEmpty returns the element at index `nth` of collection.
@@ -482,25 +294,23 @@ func NthOr[T any, N constraints.Integer](collection iter.Seq[T], nth N, fallback
 // Will iterate n times through the sequence.
 // Play: https://go.dev/play/p/pC0Zhu3EUhe
 func NthOrEmpty[T any, N constraints.Integer](collection iter.Seq[T], nth N) T {
-	value, _ := seqNth(collection, nth)
-	return value
+	_ = "STUB: not implemented"
+	return *new(T)
 }
 
 // Sample returns a random item from collection.
 // Will iterate through the entire sequence and allocate a slice large enough to hold all elements.
 // Long input sequences can cause excessive memory usage.
 // Play: https://go.dev/play/p/YDJVX0UXYDi
-func Sample[T any](collection iter.Seq[T]) T {
-	return SampleBy(collection, xrand.IntN)
-}
+func Sample[T any](collection iter.Seq[T]) T { _ = "STUB: not implemented"; return *new(T) }
 
 // SampleBy returns a random item from collection, using randomIntGenerator as the random index generator.
 // Will iterate through the entire sequence and allocate a slice large enough to hold all elements.
 // Long input sequences can cause excessive memory usage.
 // Play: https://go.dev/play/p/QQooySxORib
 func SampleBy[T any](collection iter.Seq[T], randomIntGenerator func(int) int) T {
-	slice := slices.Collect(collection)
-	return lo.SampleBy(slice, randomIntGenerator)
+	_ = "STUB: not implemented"
+	return *new(T)
 }
 
 // Samples returns N random unique items from collection.
@@ -508,7 +318,8 @@ func SampleBy[T any](collection iter.Seq[T], randomIntGenerator func(int) int) T
 // Long input sequences can cause excessive memory usage.
 // Play: https://go.dev/play/p/GUTFx9LQ8pP
 func Samples[T any, I ~func(func(T) bool)](collection I, count int) I {
-	return SamplesBy(collection, count, xrand.IntN)
+	_ = "STUB: not implemented"
+	return *new(I)
 }
 
 // SamplesBy returns N random unique items from collection, using randomIntGenerator as the random index generator.
@@ -516,7 +327,6 @@ func Samples[T any, I ~func(func(T) bool)](collection I, count int) I {
 // Long input sequences can cause excessive memory usage.
 // Play: https://go.dev/play/p/fX2FEtixrVG
 func SamplesBy[T any, I ~func(func(T) bool)](collection I, count int, randomIntGenerator func(int) int) I {
-	slice := slices.Collect(iter.Seq[T](collection))
-	seq := lo.SamplesBy(slice, count, randomIntGenerator)
-	return I(slices.Values(seq))
+	_ = "STUB: not implemented"
+	return *new(I)
 }

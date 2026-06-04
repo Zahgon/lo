@@ -3,8 +3,6 @@ package lo
 import (
 	"sync"
 	"time"
-
-	"github.com/samber/lo/internal/xtime"
 )
 
 type debounce struct {
@@ -15,56 +13,17 @@ type debounce struct {
 	callbacks []func()
 }
 
-func (d *debounce) reset() {
-	d.mu.Lock()
-	defer d.mu.Unlock()
+func (d *debounce) reset() { _ = "STUB: not implemented"; return }
 
-	if d.done {
-		return
-	}
+// We need to lock the mutex here to avoid race conditions with 2 concurrent calls to reset()
 
-	if d.timer != nil {
-		d.timer.Stop()
-	}
-
-	d.timer = time.AfterFunc(d.after, func() {
-		// We need to lock the mutex here to avoid race conditions with 2 concurrent calls to reset()
-		d.mu.Lock()
-		callbacks := append([]func(){}, d.callbacks...)
-		d.mu.Unlock()
-
-		for i := range callbacks {
-			callbacks[i]()
-		}
-	})
-}
-
-func (d *debounce) cancel() {
-	d.mu.Lock()
-	defer d.mu.Unlock()
-
-	if d.timer != nil {
-		d.timer.Stop()
-		d.timer = nil
-	}
-
-	d.done = true
-}
+func (d *debounce) cancel() { _ = "STUB: not implemented"; return }
 
 // NewDebounce creates a debounced instance that delays invoking functions given until after wait milliseconds have elapsed.
 // Play: https://go.dev/play/p/_IPY7ROzbMk
 func NewDebounce(duration time.Duration, f ...func()) (func(), func()) {
-	d := &debounce{
-		after:     duration,
-		mu:        new(sync.Mutex),
-		timer:     nil,
-		done:      false,
-		callbacks: f,
-	}
-
-	return func() {
-		d.reset()
-	}, d.cancel
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 type debounceByItem struct {
@@ -80,91 +39,28 @@ type debounceBy[T comparable] struct {
 	callbacks []func(key T, count int)
 }
 
-func (d *debounceBy[T]) reset(key T) {
-	d.mu.Lock()
-	if _, ok := d.items[key]; !ok {
-		d.items[key] = &debounceByItem{
-			mu:    new(sync.Mutex),
-			timer: nil,
-		}
-	}
+func (d *debounceBy[T]) reset(key T) { _ = "STUB: not implemented"; return }
 
-	item := d.items[key]
+// We need to lock the mutex here to avoid race conditions with 2 concurrent calls to reset()
 
-	d.mu.Unlock()
-
-	item.mu.Lock()
-	defer item.mu.Unlock()
-
-	item.count++
-
-	if item.timer != nil {
-		item.timer.Stop()
-	}
-
-	item.timer = time.AfterFunc(d.after, func() {
-		// We need to lock the mutex here to avoid race conditions with 2 concurrent calls to reset()
-		item.mu.Lock()
-		count := item.count
-		item.count = 0
-		callbacks := append([]func(key T, count int){}, d.callbacks...)
-		item.mu.Unlock()
-
-		for i := range callbacks {
-			callbacks[i](key, count)
-		}
-	})
-}
-
-func (d *debounceBy[T]) cancel(key T) {
-	d.mu.Lock()
-	defer d.mu.Unlock()
-
-	if item, ok := d.items[key]; ok {
-		item.mu.Lock()
-
-		if item.timer != nil {
-			item.timer.Stop()
-			item.timer = nil
-		}
-
-		item.mu.Unlock()
-
-		delete(d.items, key)
-	}
-}
+func (d *debounceBy[T]) cancel(key T) { _ = "STUB: not implemented"; return }
 
 // NewDebounceBy creates a debounced instance for each distinct key, that delays invoking functions given until after wait milliseconds have elapsed.
 // Play: https://go.dev/play/p/Izk7GEzZm2Q
 func NewDebounceBy[T comparable](duration time.Duration, f ...func(key T, count int)) (func(key T), func(key T)) {
-	d := &debounceBy[T]{
-		after:     duration,
-		mu:        new(sync.Mutex),
-		items:     map[T]*debounceByItem{},
-		callbacks: f,
-	}
-
-	return func(key T) {
-		d.reset(key)
-	}, d.cancel
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // Attempt invokes a function N times until it returns valid output. Returns either the caught error or nil.
 // When the first argument is less than `1`, the function runs until a successful response is returned.
 // Play: https://go.dev/play/p/3ggJZ2ZKcMj
 func Attempt(maxIteration int, f func(index int) error) (int, error) {
-	var err error
-
-	for i := 0; maxIteration <= 0 || i < maxIteration; i++ {
-		// for retries >= 0 {
-		err = f(i)
-		if err == nil {
-			return i + 1, nil
-		}
-	}
-
-	return maxIteration, err
+	_ = "STUB: not implemented"
+	return 0, nil
 }
+
+// for retries >= 0 {
 
 // AttemptWithDelay invokes a function N times until it returns valid output,
 // with a pause between each call. Returns either the caught error or nil.
@@ -172,22 +68,8 @@ func Attempt(maxIteration int, f func(index int) error) (int, error) {
 // response is returned.
 // Play: https://go.dev/play/p/tVs6CygC7m1
 func AttemptWithDelay(maxIteration int, delay time.Duration, f func(index int, duration time.Duration) error) (int, time.Duration, error) {
-	var err error
-
-	start := xtime.Now()
-
-	for i := 0; maxIteration <= 0 || i < maxIteration; i++ {
-		err = f(i, xtime.Since(start))
-		if err == nil {
-			return i + 1, xtime.Since(start), nil
-		}
-
-		if maxIteration <= 0 || i+1 < maxIteration {
-			xtime.Sleep(delay)
-		}
-	}
-
-	return maxIteration, xtime.Since(start), err
+	_ = "STUB: not implemented"
+	return 0, *new(time.Duration), nil
 }
 
 // AttemptWhile invokes a function N times until it returns valid output.
@@ -198,22 +80,13 @@ func AttemptWithDelay(maxIteration int, delay time.Duration, f func(index int, d
 // returned.
 // Play: https://go.dev/play/p/1VS7HxlYMOG
 func AttemptWhile(maxIteration int, f func(int) (error, bool)) (int, error) {
-	var err error
-	var shouldContinueInvoke bool
-
-	for i := 0; maxIteration <= 0 || i < maxIteration; i++ {
-		// for retries >= 0 {
-		err, shouldContinueInvoke = f(i)
-		if !shouldContinueInvoke { // if shouldContinueInvoke is false, then return immediately
-			return i + 1, err
-		}
-		if err == nil {
-			return i + 1, nil
-		}
-	}
-
-	return maxIteration, err
+	_ = "STUB: not implemented"
+	return 0, nil
 }
+
+// for retries >= 0 {
+
+// if shouldContinueInvoke is false, then return immediately
 
 // AttemptWhileWithDelay invokes a function N times until it returns valid output,
 // with a pause between each call. Returns either the caught error or nil, along
@@ -223,27 +96,11 @@ func AttemptWhile(maxIteration int, f func(int) (error, bool)) (int, error) {
 // response is returned.
 // Play: https://go.dev/play/p/mhufUjJfLEF
 func AttemptWhileWithDelay(maxIteration int, delay time.Duration, f func(int, time.Duration) (error, bool)) (int, time.Duration, error) {
-	var err error
-	var shouldContinueInvoke bool
-
-	start := xtime.Now()
-
-	for i := 0; maxIteration <= 0 || i < maxIteration; i++ {
-		err, shouldContinueInvoke = f(i, xtime.Since(start))
-		if !shouldContinueInvoke { // if shouldContinueInvoke is false, then return immediately
-			return i + 1, xtime.Since(start), err
-		}
-		if err == nil {
-			return i + 1, xtime.Since(start), nil
-		}
-
-		if maxIteration <= 0 || i+1 < maxIteration {
-			xtime.Sleep(delay)
-		}
-	}
-
-	return maxIteration, xtime.Since(start), err
+	_ = "STUB: not implemented"
+	return 0, *new(time.Duration), nil
 }
+
+// if shouldContinueInvoke is false, then return immediately
 
 type transactionStep[T any] struct {
 	exec       func(T) (T, error)
@@ -252,11 +109,7 @@ type transactionStep[T any] struct {
 
 // NewTransaction instantiate a new transaction.
 // Play: https://go.dev/play/p/7B2o52wEQbj
-func NewTransaction[T any]() *Transaction[T] {
-	return &Transaction[T]{
-		steps: []transactionStep[T]{},
-	}
-}
+func NewTransaction[T any]() *Transaction[T] { _ = "STUB: not implemented"; return nil }
 
 // Transaction implements a Saga pattern.
 type Transaction[T any] struct {
@@ -266,39 +119,15 @@ type Transaction[T any] struct {
 // Then adds a step to the chain of callbacks. Returns the same Transaction.
 // Play: https://go.dev/play/p/Qxrd7MGQGh1 https://go.dev/play/p/xrHb2_kMvTY
 func (t *Transaction[T]) Then(exec func(T) (T, error), onRollback func(T) T) *Transaction[T] {
-	t.steps = append(t.steps, transactionStep[T]{
-		exec:       exec,
-		onRollback: onRollback,
-	})
-
-	return t
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Process runs the Transaction steps and rollbacks in case of errors.
 // Play: https://go.dev/play/p/Qxrd7MGQGh1 https://go.dev/play/p/xrHb2_kMvTY
 func (t *Transaction[T]) Process(state T) (T, error) {
-	var i int
-	var err error
-
-	for i < len(t.steps) {
-		state, err = t.steps[i].exec(state)
-		if err != nil {
-			break
-		}
-
-		i++
-	}
-
-	if err == nil {
-		return state, nil
-	}
-
-	for i > 0 {
-		i--
-		state = t.steps[i].onRollback(state)
-	}
-
-	return state, err
+	_ = "STUB: not implemented"
+	return *new(T), nil
 }
 
 // @TODO: single mutex per key?
@@ -311,78 +140,36 @@ type throttleBy[T comparable] struct {
 	count      map[T]int
 }
 
-func (th *throttleBy[T]) throttledFunc(key T) {
-	th.mu.Lock()
-	defer th.mu.Unlock()
+func (th *throttleBy[T]) throttledFunc(key T) { _ = "STUB: not implemented"; return }
 
-	if th.count[key] < th.countLimit {
-		th.count[key]++
-
-		for _, f := range th.callbacks {
-			f(key)
-		}
-	}
-	if th.timer == nil {
-		th.timer = time.AfterFunc(th.interval, func() {
-			th.reset()
-		})
-	}
-}
-
-func (th *throttleBy[T]) reset() {
-	th.mu.Lock()
-	defer th.mu.Unlock()
-
-	if th.timer != nil {
-		th.timer.Stop()
-	}
-
-	th.count = map[T]int{}
-	th.timer = nil
-}
+func (th *throttleBy[T]) reset() { _ = "STUB: not implemented"; return }
 
 // NewThrottle creates a throttled instance that invokes given functions only once in every interval.
 // This returns 2 functions, First one is throttled function and Second one is a function to reset interval.
 // Play: https://go.dev/play/p/qQn3fm8Z7jS
 func NewThrottle(interval time.Duration, f ...func()) (throttle, reset func()) {
-	return NewThrottleWithCount(interval, 1, f...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewThrottleWithCount is NewThrottle with count limit, throttled function will be invoked count times in every interval.
 // Play: https://go.dev/play/p/w5nc0MgWtjC
 func NewThrottleWithCount(interval time.Duration, count int, f ...func()) (throttle, reset func()) {
-	callbacks := Map(f, func(item func(), _ int) func(struct{}) {
-		return func(struct{}) {
-			item()
-		}
-	})
-
-	throttleFn, reset := NewThrottleByWithCount(interval, count, callbacks...)
-	return func() {
-		throttleFn(struct{}{})
-	}, reset
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewThrottleBy creates a throttled instance that invokes given functions only once in every interval.
 // This returns 2 functions, First one is throttled function and Second one is a function to reset interval.
 // Play: https://go.dev/play/p/0Wv6oX7dHdC
 func NewThrottleBy[T comparable](interval time.Duration, f ...func(key T)) (throttle func(key T), reset func()) {
-	return NewThrottleByWithCount(interval, 1, f...)
+	_ = "STUB: not implemented"
+	return nil, nil
 }
 
 // NewThrottleByWithCount is NewThrottleBy with count limit, throttled function will be invoked count times in every interval.
 // Play: https://go.dev/play/p/vQk3ECH7_EW
 func NewThrottleByWithCount[T comparable](interval time.Duration, count int, f ...func(key T)) (throttle func(key T), reset func()) {
-	if count <= 0 {
-		count = 1
-	}
-
-	th := &throttleBy[T]{
-		mu:         new(sync.Mutex),
-		interval:   interval,
-		callbacks:  f,
-		countLimit: count,
-		count:      map[T]int{},
-	}
-	return th.throttledFunc, th.reset
+	_ = "STUB: not implemented"
+	return nil, nil
 }

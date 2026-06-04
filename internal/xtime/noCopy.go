@@ -10,5 +10,5 @@ package xtime
 type noCopy struct{}
 
 // Lock is a no-op used by -copylocks checker from `go vet`.
-func (*noCopy) Lock()   {}
-func (*noCopy) Unlock() {}
+func (*noCopy) Lock()   { _ = "STUB: not implemented"; return }
+func (*noCopy) Unlock() { _ = "STUB: not implemented"; return }

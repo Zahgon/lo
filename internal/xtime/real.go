@@ -5,26 +5,22 @@ import (
 	"time"
 )
 
-func NewRealClock() *RealClock {
-	return &RealClock{}
-}
+func NewRealClock() *RealClock { _ = "STUB: not implemented"; return nil }
 
 type RealClock struct {
 	_ noCopy
 }
 
-func (c *RealClock) Now() time.Time {
-	return time.Now()
-}
+func (c *RealClock) Now() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
 func (c *RealClock) Since(t time.Time) time.Duration {
-	return time.Since(t)
+	_ = "STUB: not implemented"
+	return *new(time.Duration)
 }
 
 func (c *RealClock) Until(t time.Time) time.Duration {
-	return time.Until(t)
+	_ = "STUB: not implemented"
+	return *new(time.Duration)
 }
 
-func (c *RealClock) Sleep(d time.Duration) {
-	time.Sleep(d)
-}
+func (c *RealClock) Sleep(d time.Duration) { _ = "STUB: not implemented"; return }

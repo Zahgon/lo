@@ -5,25 +5,15 @@ import "time"
 
 var clock Clock = &RealClock{}
 
-func SetClock(c Clock) {
-	clock = c
-}
+func SetClock(c Clock) { _ = "STUB: not implemented"; return }
 
-func Now() time.Time {
-	return clock.Now()
-}
+func Now() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
-func Since(t time.Time) time.Duration {
-	return clock.Since(t)
-}
+func Since(t time.Time) time.Duration { _ = "STUB: not implemented"; return *new(time.Duration) }
 
-func Until(t time.Time) time.Duration {
-	return clock.Until(t)
-}
+func Until(t time.Time) time.Duration { _ = "STUB: not implemented"; return *new(time.Duration) }
 
-func Sleep(d time.Duration) {
-	clock.Sleep(d)
-}
+func Sleep(d time.Duration) { _ = "STUB: not implemented"; return }
 
 type Clock interface {
 	Now() time.Time

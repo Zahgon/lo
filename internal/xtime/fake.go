@@ -5,15 +5,9 @@ import (
 	"time"
 )
 
-func NewFakeClock() *FakeClock {
-	return NewFakeClockAt(time.Now())
-}
+func NewFakeClock() *FakeClock { _ = "STUB: not implemented"; return nil }
 
-func NewFakeClockAt(t time.Time) *FakeClock {
-	return &FakeClock{
-		time: t,
-	}
-}
+func NewFakeClockAt(t time.Time) *FakeClock { _ = "STUB: not implemented"; return nil }
 
 type FakeClock struct {
 	_ noCopy
@@ -23,18 +17,16 @@ type FakeClock struct {
 	time time.Time
 }
 
-func (c *FakeClock) Now() time.Time {
-	return c.time
-}
+func (c *FakeClock) Now() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
 func (c *FakeClock) Since(t time.Time) time.Duration {
-	return c.time.Sub(t)
+	_ = "STUB: not implemented"
+	return *new(time.Duration)
 }
 
 func (c *FakeClock) Until(t time.Time) time.Duration {
-	return t.Sub(c.time)
+	_ = "STUB: not implemented"
+	return *new(time.Duration)
 }
 
-func (c *FakeClock) Sleep(d time.Duration) {
-	c.time = c.time.Add(d)
-}
+func (c *FakeClock) Sleep(d time.Duration) { _ = "STUB: not implemented"; return }
